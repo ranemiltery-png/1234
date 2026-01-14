@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест позиции фона</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Стили для тестовой панели */
+        .test-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #f7aef8;
+            border-radius: 10px;
+            padding: 15px;
+            z-index: 9999;
+            color: white;
+            width: 220px;
+            box-shadow: 0 0 20px rgba(247, 174, 248, 0.3);
+        }
+        
+        .test-panel h3 {
+            color: #f7aef8;
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        .test-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .test-btn {
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .test-btn:hover {
+            background: #f7aef8;
+            color: black;
+        }
+        
+        .current-info {
+            margin-top: 10px;
+            padding: 8px;
+            background: #222;
+            border-radius: 5px;
+            font-size: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Копируем твою герой-секцию из index.html -->
+    <section class="hero">
+        <div class="hero-overlay">
+            <h1>Твои волосы — твоя уверенность</h1>
+            <p>Профессиональный уход в Туле. Запишись на процедуру и получи волосы мечты.</p>
+            <a href="https://t.me/avoronina12" class="btn-main">Записаться в Telegram</a>
+        </div>
+    </section>
+
+    <!-- Панель управления -->
+    <div class="test-panel">
+        <h3>🎯 Тест позиции фона</h3>
+        <div class="test-buttons">
+            <button class="test-btn" data-pos="center top">⬆️ Верх (top)</button>
+            <button class="test-btn" data-pos="center 20%">⬇️ 20% вниз</button>
+            <button class="test-btn" data-pos="center 40%">⬇️ 40% вниз</button>
+            <button class="test-btn" data-pos="center 60%">⬇️ 60% вниз</button>
+            <button class="test-btn" data-pos="center bottom">⬇️ Низ (bottom)</button>
+        </div>
+        <div class="current-info">
+            <strong>Текущая позиция:</strong><br>
+            <span id="currentPos">center top</span>
+        </div>
+    </div>
+
+    <script>
+        // Получаем все кнопки
+        const buttons = document.querySelectorAll('.test-btn');
+        const currentPosSpan = document.getElementById('currentPos');
+        const heroSection = document.querySelector('.hero');
+        
+        // Обработчик для кнопок
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                const position = this.getAttribute('data-pos');
+                
+                // Меняем позицию фона
+                heroSection.style.backgroundPosition = position;
+                
+                // Обновляем текст
+                currentPosSpan.textContent = position;
+                
+                // Меняем цвет активной кнопки
+                buttons.forEach(btn => btn.style.background = '#333');
+                this.style.background = '#f7aef8';
+                this.style.color = 'black';
+                
+                console.log('Позиция изменена на: ' + position);
+                
+                // Сохраняем для копирования
+                window.lastPosition = position;
+            });
+        });
+        
+        // Кнопка по умолчанию
+        buttons[0].style.background = '#f7aef8';
+        buttons[0].style.color = 'black';
+        
+        // Автокопирование при клике на позицию
+        currentPosSpan.addEventListener('click', function() {
+            if (window.lastPosition) {
+                const cssCode = `background-position: ${window.lastPosition};`;
+                navigator.clipboard.writeText(cssCode)
+                    .then(() => alert('✅ Скопировано:\n' + cssCode))
+                    .catch(() => prompt('Скопируй это:', cssCode));
+            }
+        });
+    </script>
+
+</body>
+</html>
